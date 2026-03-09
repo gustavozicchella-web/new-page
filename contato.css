@@ -1,0 +1,29 @@
+body{
+    color: white;
+    background-color:black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+ul{
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    align-items: center;
+    padding: 10px;
+
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+ div{
+    height: 100%; /* Necessário para definir a altura total */
+    margin: 0;
+}
+
+.centralizado {
+    display: flex;
+    justify-content: center; /* Centraliza na horizontal */
+    align-items: center;     /* Centraliza na vertical */
+    height: 100vh;           /* Altura da tela inteira (viewport height) */
+    font-size: 25px;
+}
