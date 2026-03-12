@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projetos</title>
     <link rel="stylesheet" href="projeto.css">
+    
 </head>
 <body>
     <nav>
@@ -18,6 +19,177 @@
         </ul>
         
     </nav>
+   
+<div class="calculadora-container" style="max-width: 380px; margin: 2rem auto; padding: 1.5rem; background: #111; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); color: white; font-family: Arial, sans-serif;">
+  <h2 style="text-align:center; margin:0 0 1.2rem; color:#0f0;">Calculadora</h2>
+  
+  <input type="text" id="calc-display" readonly 
+         style="width:100%; height:70px; font-size:2.4rem; text-align:right; padding:0 15px; background:#222; color:#0f0; border:none; border-radius:10px; margin-bottom:1rem; box-sizing:border-box;" />
+
+  <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px;">
+    <button onclick="clearDisplay()" style="background:#c0392b; color:white;">C</button>
+    <button onclick="deleteLast()" style="background:#7f8c8d;">←</button>
+    <button onclick="appendToDisplay('/')" style="background:#e67e22;">/</button>
+    <button onclick="appendToDisplay('*')" style="background:#e67e22;">×</button>
     
+    <button onclick="appendToDisplay('7')">7</button>
+    <button onclick="appendToDisplay('8')">8</button>
+    <button onclick="appendToDisplay('9')">9</button>
+    <button onclick="appendToDisplay('-')" style="background:#e67e22;">-</button>
+    
+    <button onclick="appendToDisplay('4')">4</button>
+    <button onclick="appendToDisplay('5')">5</button>
+    <button onclick="appendToDisplay('6')">6</button>
+    <button onclick="appendToDisplay('+')" style="background:#e67e22;">+</button>
+    
+    <button onclick="appendToDisplay('1')">1</button>
+    <button onclick="appendToDisplay('2')">2</button>
+    <button onclick="appendToDisplay('3')">3</button>
+    <button onclick="calculate()" style="background:#27ae60; grid-row: span 2; align-self: stretch;">=</button>
+    
+    <button onclick="appendToDisplay('0')" style="grid-column: span 2;">0</button>
+    <button onclick="appendToDisplay('.')">.</button>
+  </div>
+</div>
+
+<script>
+
+
+const display = document.getElementById('calc-display');
+
+function appendToDisplay(value) {
+  display.value += value;
+}
+
+function clearDisplay() {
+  display.value = '';
+}
+
+function deleteLast() {
+  display.value = display.value.slice(0, -1);
+}
+
+function calculate() {
+  try {
+    display.value = eval(display.value) || '0';
+  } catch (e) {
+    display.value = 'Erro';
+    setTimeout(() => { display.value = ''; }, 1500);
+  }
+}
+</script>
+
+
+<div class="jogo-jokenpo" style="max-width: 420px; margin: 2rem auto; padding: 1.5rem; background: #1a1a2e; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); color: #e0e0ff; font-family: Arial, sans-serif; text-align: center;">
+  
+  <h2 style="margin: 0 0 1.2rem; color: #00d4ff;">Pedra, Papel, Tesoura</h2>
+  
+  <div style="margin: 1.5rem 0; font-size: 1.3rem;">
+    <div id="jokenpo-placar" style="margin-bottom: 1rem;">
+      Você: <span id="pontos-jogador">0</span> × <span id="pontos-computador">0</span> : Computador
+    </div>
+    <div id="jokenpo-resultado" style="min-height: 3rem; font-size: 1.4rem; font-weight: bold; color: #ffd700;"></div>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap;">
+    <button class="btn-jokenpo" data-escolha="pedra"    style="width: 100px; height: 100px; font-size: 3rem; border-radius: 50%; border: 3px solid #00d4ff; background: #0f3460; color: white; cursor: pointer; transition: all 0.2s;">✊</button>
+    <button class="btn-jokenpo" data-escolha="papel"    style="width: 100px; height: 100px; font-size: 3rem; border-radius: 50%; border: 3px solid #00d4ff; background: #0f3460; color: white; cursor: pointer; transition: all 0.2s;">✋</button>
+    <button class="btn-jokenpo" data-escolha="tesoura"  style="width: 100px; height: 100px; font-size: 3rem; border-radius: 50%; border: 3px solid #00d4ff; background: #0f3460; color: white; cursor: pointer; transition: all 0.2s;">✌️</button>
+  </div>
+
+  <button id="jokenpo-reset" style="margin-top: 1.8rem; padding: 0.8rem 1.6rem; font-size: 1.1rem; background: #e94560; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s;">
+    Reiniciar placar
+  </button>
+
+</div>
+
+<script>
+
+(function() {
+  const botoes = document.querySelectorAll('.btn-jokenpo');
+  const resultadoEl = document.getElementById('jokenpo-resultado');
+  const pontosJogadorEl = document.getElementById('pontos-jogador');
+  const pontosPcEl = document.getElementById('pontos-computador');
+  const btnReset = document.getElementById('jokenpo-reset');
+
+  let pontosJogador = 0;
+  let pontosComputador = 0;
+
+  const escolhas = ['pedra', 'papel', 'tesoura'];
+  const emojis = { pedra: '✊', papel: '✋', tesoura: '✌️' };
+
+  function escolhaComputador() {
+    return escolhas[Math.floor(Math.random() * 3)];
+  }
+
+  function jogar(escolhaJogador) {
+    const pc = escolhaComputador();
+    let mensagem = `Você: ${emojis[escolhaJogador]} × ${emojis[pc]} Computador<br>`;
+
+    if (escolhaJogador === pc) {
+      mensagem += "<span style='color:#ffd700;'>Empate!</span>";
+    } else if (
+      (escolhaJogador === 'pedra'   && pc === 'tesoura') ||
+      (escolhaJogador === 'papel'   && pc === 'pedra')   ||
+      (escolhaJogador === 'tesoura' && pc === 'papel')
+    ) {
+      mensagem += "<span style='color:#00ff9d;'>Você ganhou!</span>";
+      pontosJogador++;
+    } else {
+      mensagem += "<span style='color:#ff4d4d;'>Computador ganhou!</span>";
+      pontosComputador++;
+    }
+
+    resultadoEl.innerHTML = mensagem;
+    pontosJogadorEl.textContent = pontosJogador;
+    pontosPcEl.textContent = pontosComputador;
+
+    
+    botoes.forEach(btn => {
+      btn.style.transform = 'scale(1)';
+      if (btn.dataset.escolha === escolhaJogador) {
+        btn.style.transform = 'scale(1.15)';
+        btn.style.boxShadow = '0 0 20px #00d4ff';
+      }
+    });
+
+    setTimeout(() => {
+      botoes.forEach(btn => {
+        btn.style.transform = 'scale(1)';
+        btn.style.boxShadow = 'none';
+      });
+    }, 800);
+  }
+
+  botoes.forEach(botao => {
+    botao.addEventListener('click', () => {
+      jogar(botao.dataset.escolha);
+    });
+  });
+
+  btnReset.addEventListener('click', () => {
+    pontosJogador = 0;
+    pontosComputador = 0;
+    pontosJogadorEl.textContent = '0';
+    pontosPcEl.textContent = '0';
+    resultadoEl.innerHTML = 'Escolha uma opção!';
+  });
+
+  
+  resultadoEl.innerHTML = 'Faça sua jogada!';
+})();
+</script>
+
+<style>
+  .btn-jokenpo:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px #00d4ff80;
+    background: #16213e;
+  }
+  .btn-jokenpo:active {
+    transform: scale(0.95);
+  }
+</style>
+
 </body>
 </html>
